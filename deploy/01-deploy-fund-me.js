@@ -28,10 +28,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     })
     log(`FundMe deployed at ${fundMe.address}`)
 
-    if (
-        !developmentChains.includes(network.name) &&
-        process.env.ETHERSCAN_API_KEY
-    ) {
+    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         await verify(fundMe.address, [ethUsdPriceFeedAddress])
     }
 }
