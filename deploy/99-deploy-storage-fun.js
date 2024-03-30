@@ -47,21 +47,14 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     // You can use this to trace!
     log("----------------------------------------------------")
     log("Logging Array And Mapping...")
-    const trace = await network.provider.send("debug_traceTransaction", [
-        funWithStorage.transactionHash,
-    ])
+    const trace = await network.provider.send("debug_traceTransaction", [funWithStorage.transactionHash])
     for (structLog in trace.structLogs) {
         if (trace.structLogs[structLog].op == "SSTORE") {
             log(trace.structLogs[structLog])
         }
     }
-    const firstelementLocation = ethers.utils.keccak256(
-        "0x0000000000000000000000000000000000000000000000000000000000000002"
-    )
-    const arrayElement = await ethers.provider.getStorageAt(
-        funWithStorage.address,
-        firstelementLocation
-    )
+    const firstelementLocation = ethers.utils.keccak256("0x0000000000000000000000000000000000000000000000000000000000000002")
+    const arrayElement = await ethers.provider.getStorageAt(funWithStorage.address, firstelementLocation)
     log(`Location ${firstelementLocation}: ${arrayElement}`)
 
     // Converting Hex To Int
@@ -73,10 +66,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         "0x0000000000000000000000000000000000000000000000000000000000000000",
         "0x0000000000000000000000000000000000000000000000000000000000000003"
     )
-    const mapElement = await ethers.provider.getStorageAt(
-        funWithStorage.address,
-        firstelementLocationMap
-    )
+    const mapElement = await ethers.provider.getStorageAt(funWithStorage.address, firstelementLocationMap)
     log(`Location ${firstelementLocationMap}: ${mapElement}`)
 
     // Converting Hex To Int
